@@ -1,0 +1,5 @@
+.profile__title-wrapper {
+  column-gap: 18px;
+  display: flex;
+  justify-content: center;
+}

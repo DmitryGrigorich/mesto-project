@@ -1,0 +1,10 @@
+.card__like {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: .4s;
+}
+
+.card__like:hover {
+  opacity: .5;
+}
