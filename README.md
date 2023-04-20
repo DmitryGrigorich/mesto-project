@@ -6,5 +6,6 @@
 * Проект структурирован по методологии БЭМ
 * Реализованы технологии Grid Layout, FlexBox и т.д.
 * Все ссылки имеют эффект при наведении
+* Реализован функционал страницы с помощью JavaSctipt
 
 Ссылка на github pages: <a href="https://dmitrygrigorich.github.io/mesto-project/">тык</a>
