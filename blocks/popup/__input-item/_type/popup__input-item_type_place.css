@@ -1,0 +1,15 @@
+.popup__input-item_type_place::-webkit-input-placeholder {
+  color: #C4C4C4;
+}
+.popup__input-item_type_place::-moz-placeholder {
+  color: #C4C4C4;
+}
+.popup__input-item_type_place:-ms-input-placeholder {
+  color: #C4C4C4;
+}
+.popup__input-item_type_place::-ms-input-placeholder {
+  color: #C4C4C4;
+}
+.popup__input-item_type_place::placeholder {
+  color: #C4C4C4;
+}
