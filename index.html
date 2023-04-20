@@ -34,10 +34,10 @@
     <div class="popup__container">
       <button class="popup__button-close" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" name="popup-form">
+      <form class="popup__form" name="form-profile">
         <fieldset class="popup__input">
-          <input class="popup__input-item" type="text" name="change-name">
-          <input class="popup__input-item" type="text" name="change-profession">
+          <input class="popup__input-item" type="text" name="change-name" placeholder="Укажите имя">
+          <input class="popup__input-item" type="text" name="change-profession" placeholder="Укажите профессию">
         </fieldset>
         <button class="popup__save-button" type="submit">Сохранить</button>
       </form>
@@ -47,7 +47,7 @@
     <div class="popup__container">
       <button class="popup__button-close" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form" name="popup-form">
+      <form class="popup__form" name="form-place">
         <fieldset class="popup__input">
           <input class="popup__input-item popup__input-item_type_place" type="text" name="change-place" placeholder="Название">
           <input class="popup__input-item popup__input-item_type_place" type="text" name="change-image" placeholder="Ссылка на картинку">
@@ -60,7 +60,7 @@
     <div class="popup__image-container">
       <button class="popup__button-close" type="button"></button>
       <figure class="popup__figure">
-        <img src="" alt="фото места" class="popup__image">
+        <img src="" alt="" class="popup__image">
         <figcaption class="popup__caption"></figcaption>
       </figure>
     </div>
