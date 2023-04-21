@@ -38,6 +38,8 @@ function createCard(place, link) {
 // открытие попапа редактирования профиля
 buttonEdit.addEventListener('click', () => {
   openPopup(formElement);
+  popupJob.value = jobInput.textContent;
+  popupName.value = nameInput.textContent;
 });
 
 // открытие попапа добавления карточки
@@ -66,9 +68,6 @@ function submitFormHandler (evt) {
     jobInput.textContent = jobValue;
 
     closePopup(formElement);
-
-    popupName.placeholder = nameInput.textContent;
-    popupJob.placeholder = jobInput.textContent;
 
     evt.target.reset()
   }
