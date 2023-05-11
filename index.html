@@ -31,10 +31,11 @@
     <p class="footer__copyright">&copy;&nbsp;2023 Mesto Russia</p>
   </footer>
   <div class="popup popup_type_profile">
+    <div class="popup__overlay"></div>
     <div class="popup__container">
       <button class="popup__button-close" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" name="form-profile">
+      <form class="popup__form" name="form-profile" novalidate>
         <fieldset class="popup__input">
           <input class="popup__input-item" type="text" name="change-name" placeholder="Укажите имя">
           <input class="popup__input-item" type="text" name="change-profession" placeholder="Укажите профессию">
@@ -44,10 +45,11 @@
     </div>
   </div>
   <div class="popup popup_type_place">
+    <div class="popup__overlay"></div>
     <div class="popup__container">
       <button class="popup__button-close" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form" name="form-place">
+      <form class="popup__form" name="form-place" novalidate>
         <fieldset class="popup__input">
           <input class="popup__input-item popup__input-item_type_place" type="text" name="change-place" placeholder="Название">
           <input class="popup__input-item popup__input-item_type_place" type="text" name="change-image" placeholder="Ссылка на картинку">
@@ -57,6 +59,7 @@
     </div>
   </div>
   <div class="popup popup_type_image">
+    <div class="popup__overlay popup__overlay_type_image"></div>
     <div class="popup__image-container">
       <button class="popup__button-close" type="button"></button>
       <figure class="popup__figure">

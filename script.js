@@ -1,3 +1,4 @@
+const popups = document.querySelectorAll('.popup');
 const formElement = document.querySelector('.popup_type_profile');
 const formCard = document.querySelector('.popup_type_place');
 const nameInput = document.querySelector('.profile__title');
@@ -17,13 +18,28 @@ const popupImageItem = document.getElementsByName('change-image')[0];
 const popupInput = document.querySelectorAll('.popup__input-item');
 
 // функция открытия попапа
-function openPopup(popupElement) {
-  popupElement.classList.add('popup_opened')
+let openedPopup = '';
+
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+  openedPopup = popup;
+  document.addEventListener('keydown', closeOnEsc);
 }
 
 // функция закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  openedPopup = '';
+  document.removeEventListener('keydown', closeOnEsc);
+}
+
+// функция закрытия попапа через esc 
+function closeOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    if (openedPopup) {
+      closePopup(openedPopup);
+    }
+  }
 }
 
 // функция создания карточки
@@ -47,11 +63,18 @@ buttonAdd.addEventListener('click', () => {
   openPopup(formCard);
 });
 
-// закрытие попапов
-buttonsClose.forEach((btn) => {
-  const popup = btn.closest('.popup'); 
-  btn.addEventListener('click', () => closePopup(popup));
+// закрытие попапов (Ecs, overlay)
+popups.forEach(item => {
+  item.addEventListener('click', evt => {
+    if (evt.target.classList.contains('popup__button-close')) {
+      closePopup(item);
+    }
+    if (evt.target.classList.contains('popup__overlay')) {
+      closePopup(item);
+    }
+  })
 })
+
 
 // изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
 function submitFormHandler (evt) {
@@ -152,4 +175,3 @@ function submitCardFormHandler (evt) {
 
 // кнопка "создать". сохранение изменений и закрытие попапа
 formCard.addEventListener('submit', submitCardFormHandler);
-
