@@ -1,46 +1,90 @@
-const popups = document.querySelectorAll('.popup');
-const formElement = document.querySelector('.popup_type_profile');
-const formCard = document.querySelector('.popup_type_place');
+const popups = Array.from(document.querySelectorAll('.popup'));
+const popupProfileEdit = document.querySelector('.popup_type_profile');
+const popupPlaceAdd = document.querySelector('.popup_type_place');
 const nameInput = document.querySelector('.profile__title');
 const jobInput = document.querySelector('.profile__subtitle');
 const buttonEdit = document.querySelector('.profile__edit-button');
-const buttonsClose = document.querySelectorAll('.popup__button-close');
+const buttonsClose = Array.from(document.querySelectorAll('.popup__button-close'));
 const buttonAdd = document.querySelector('.profile__add-button');
 const popupImage = document.querySelector('.popup_type_image');
 const popupImagePicture = popupImage.querySelector('.popup__image');
 const cardTemplate = document.querySelector('#template_card').content;
 const cardsContainer = document.querySelector('.cards');
 const imageCaption = popupImage.querySelector('.popup__caption');
-const popupName = document.getElementsByName('change-name')[0];
-const popupJob = document.getElementsByName('change-profession')[0];
-const popupPlace = document.getElementsByName('change-place')[0];
-const popupImageItem = document.getElementsByName('change-image')[0];
-const popupInput = document.querySelectorAll('.popup__input-item');
+// формы попапов
+const formPopupProfile = document.forms.profileForm;
+const formPopupPlace = document.forms.placeForm;
+// инпуты попапов
+const popupName = document.forms.profileForm.nameInput;
+const popupJob = document.forms.profileForm.jobInput;
+const popupPlace = document.forms.placeForm.placeInput;
+const popupImageInput = document.forms.placeForm.imageInput;
+// массив инпутов
+const popupInputs = Array.from(document.querySelectorAll('.popup__input'));
+// массив форм
+const popupForms = Array.from(document.querySelectorAll('.popup__form'));
+// span'ы ошибок полей ввода
+const popupNameError = document.querySelector(`.${popupName.id}-error`);
+const popupJobError = document.querySelector(`.${popupJob.id}-error`);
+const popupPlaceError = document.querySelector(`.${popupPlace.id}-error`);
+const popupImageInputError = document.querySelector(`.${popupImageInput.id}-error`);
+// текущий открытый попап
+let openedPopup = '';
+
+// ошибки инпутов
+// функция, добавляющая класс с ошибкой
+const showInpitError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('popup__input_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+};
+
+// функция удаляющая класс с ошибкой
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('popup__input_type_error');
+  errorElement.classList.remove('popup__input-error_active');
+  errorElement.textContent = '';
+};
+// функция проверки на валидность и последующее выведение ошибки
+const isValid = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInpitError(formElement, inputElement, evt.target.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+
+// добавление слушателя 'input' всем инпутам
+popupInputs.forEach((inputElement) => {
+  inputElement.addEventListener('input', isValid);
+})
 
 // функция открытия попапа
-let openedPopup = '';
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   openedPopup = popup;
-  document.addEventListener('keydown', closeOnEsc);
-}
+  document.addEventListener('keydown', closeOnEsc)
+};
 
 // функция закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   openedPopup = '';
+  formPopupPlace.reset();
   document.removeEventListener('keydown', closeOnEsc);
-}
+};
 
 // функция закрытия попапа через esc 
-function closeOnEsc(evt) {
+const closeOnEsc = (evt) => {
   if (evt.key === 'Escape') {
     if (openedPopup) {
       closePopup(openedPopup);
     }
   }
-}
+};
 
 // функция создания карточки
 function createCard(place, link) {
@@ -53,14 +97,14 @@ function createCard(place, link) {
 
 // открытие попапа редактирования профиля
 buttonEdit.addEventListener('click', () => {
-  openPopup(formElement);
+  openPopup(popupProfileEdit);
   popupJob.value = jobInput.textContent;
   popupName.value = nameInput.textContent;
 });
 
 // открытие попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
-  openPopup(formCard);
+  openPopup(popupPlaceAdd);
 });
 
 // закрытие попапов (Ecs, overlay)
@@ -73,15 +117,14 @@ popups.forEach(item => {
       closePopup(item);
     }
   })
-})
-
+});
 
 // изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
 function submitFormHandler (evt) {
   evt.preventDefault();
 
   if(popupName.value === '' && popupJob.value === '') {
-    closePopup(formElement);
+    closePopup(popupProfileEdit);
   }
   else {
     const jobValue = popupJob.value;
@@ -90,14 +133,14 @@ function submitFormHandler (evt) {
     nameInput.textContent = nameValue;
     jobInput.textContent = jobValue;
 
-    closePopup(formElement);
+    closePopup(popupProfileEdit);
 
     evt.target.reset()
   }
-}
+};
 
 // кнопка "сохранить". сохранение изменений и закрытие попапа
-formElement.addEventListener('submit', submitFormHandler);
+popupProfileEdit.addEventListener('submit', submitFormHandler);
 
 // карточки. массив с данными для карточек
 const initialCards = [
@@ -160,18 +203,18 @@ cardsContainer.addEventListener('click', function(evt) {
 function submitCardFormHandler (evt) {
   evt.preventDefault();
 
-  if (popupPlace.value === '' && popupImageItem.value === '') {
-    closePopup(formCard)
+  if (popupPlace.value === '' && popupImageInput.value === '') {
+    closePopup(popupPlaceAdd)
   }
   else {
-    const card = createCard(popupPlace.value, popupImageItem.value);
+    const card = createCard(popupPlace.value, popupImageInput.value);
     cardsContainer.prepend(card);
     
-    closePopup(formCard);
+    closePopup(popupPlaceAdd);
     
     evt.target.reset()
   }
-}
+};
 
 // кнопка "создать". сохранение изменений и закрытие попапа
-formCard.addEventListener('submit', submitCardFormHandler);
+popupPlaceAdd.addEventListener('submit', submitCardFormHandler);
