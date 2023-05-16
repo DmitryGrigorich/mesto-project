@@ -1,3 +1,4 @@
+const page = document.querySelector('.page');
 const popups = Array.from(document.querySelectorAll('.popup'));
 const popupProfileEdit = document.querySelector('.popup_type_profile');
 const popupPlaceAdd = document.querySelector('.popup_type_place');
@@ -11,69 +12,27 @@ const popupImagePicture = popupImage.querySelector('.popup__image');
 const cardTemplate = document.querySelector('#template_card').content;
 const cardsContainer = document.querySelector('.cards');
 const imageCaption = popupImage.querySelector('.popup__caption');
-// формы попапов
-const formPopupProfile = document.forms.profileForm;
-const formPopupPlace = document.forms.placeForm;
 // инпуты попапов
 const popupName = document.forms.profileForm.nameInput;
 const popupJob = document.forms.profileForm.jobInput;
 const popupPlace = document.forms.placeForm.placeInput;
 const popupImageInput = document.forms.placeForm.imageInput;
-// массив инпутов
-const popupInputs = Array.from(document.querySelectorAll('.popup__input'));
-// массив форм
-const popupForms = Array.from(document.querySelectorAll('.popup__form'));
-// span'ы ошибок полей ввода
-const popupNameError = document.querySelector(`.${popupName.id}-error`);
-const popupJobError = document.querySelector(`.${popupJob.id}-error`);
-const popupPlaceError = document.querySelector(`.${popupPlace.id}-error`);
-const popupImageInputError = document.querySelector(`.${popupImageInput.id}-error`);
 // текущий открытый попап
 let openedPopup = '';
 
-// ошибки инпутов
-// функция, добавляющая класс с ошибкой
-const showInpitError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
-};
-
-// функция удаляющая класс с ошибкой
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
-  errorElement.textContent = '';
-};
-// функция проверки на валидность и последующее выведение ошибки
-const isValid = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInpitError(formElement, inputElement, evt.target.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-};
-
-// добавление слушателя 'input' всем инпутам
-popupInputs.forEach((inputElement) => {
-  inputElement.addEventListener('input', isValid);
-})
-
 // функция открытия попапа
-
-function openPopup(popup) {
+const openPopup = (popup) =>  {
+  page.classList.add('page_inactive');
   popup.classList.add('popup_opened');
   openedPopup = popup;
   document.addEventListener('keydown', closeOnEsc)
 };
 
 // функция закрытия попапа
-function closePopup(popup) {
+const closePopup = (popup) => {
+  page.classList.remove('page_inactive')
   popup.classList.remove('popup_opened');
   openedPopup = '';
-  formPopupPlace.reset();
   document.removeEventListener('keydown', closeOnEsc);
 };
 
@@ -87,7 +46,7 @@ const closeOnEsc = (evt) => {
 };
 
 // функция создания карточки
-function createCard(place, link) {
+const createCard = (place, link) => {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   card.querySelector('.card__image').src = link;
   card.querySelector('.card__image').alt = place;
@@ -108,19 +67,43 @@ buttonAdd.addEventListener('click', () => {
 });
 
 // закрытие попапов (Ecs, overlay)
-popups.forEach(item => {
-  item.addEventListener('click', evt => {
-    if (evt.target.classList.contains('popup__button-close')) {
-      closePopup(item);
-    }
-    if (evt.target.classList.contains('popup__overlay')) {
-      closePopup(item);
-    }
+const setListenerCloseByClick = () => {
+  popups.forEach(item => {
+    item.addEventListener('click', evt => {
+      if (evt.target.classList.contains('popup__button-close')) {
+        closePopup(item);
+      }
+      if (evt.target.classList.contains('popup__overlay')) {
+        closePopup(item);
+      }
+    })
+  });
+};
+
+// вызов функции закрытия по клику
+setListenerCloseByClick();
+
+/* // функция фокусировки на попапе
+const focusOnForm = (form) => {
+  const firstElement = form.querySelector('.popup__input');
+  const lastElement = form.querySelector('.popup__save-button');
+
+  lastElement.addEventListener('focus', () => {
+    firstElement.focus();
   })
-});
+};
+
+const enableFocus = () => {
+  const forms = Array.from(document.querySelectorAll('.popup__form'));
+  forms.forEach((form) => {
+    focusOnForm(form);
+  })
+}
+
+enableFocus(); */
 
 // изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
-function submitFormHandler (evt) {
+const submitFormHandler = (evt) => {
   evt.preventDefault();
 
   if(popupName.value === '' && popupJob.value === '') {
@@ -177,7 +160,7 @@ initialCards.forEach((item) => {
 })
 
 // обработчик действий в карточке
-cardsContainer.addEventListener('click', function(evt) {
+cardsContainer.addEventListener('click', (evt) => {
   const evtTarget = evt.target;
 
   // кнопка лайка
@@ -200,7 +183,7 @@ cardsContainer.addEventListener('click', function(evt) {
 });
 
 // добавление карточек через форму
-function submitCardFormHandler (evt) {
+const submitCardFormHandler = (evt) => {
   evt.preventDefault();
 
   if (popupPlace.value === '' && popupImageInput.value === '') {
@@ -218,3 +201,71 @@ function submitCardFormHandler (evt) {
 
 // кнопка "создать". сохранение изменений и закрытие попапа
 popupPlaceAdd.addEventListener('submit', submitCardFormHandler);
+
+// ошибки инпутов
+// функция, добавляющая класс с ошибкой
+const showInpitError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('popup__input_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+};
+
+// функция удаляющая класс с ошибкой
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('popup__input_type_error');
+  errorElement.classList.remove('popup__input-error_active');
+  errorElement.textContent = '';
+};
+
+// функция проверки на валидность и последующее выведение ошибки
+const isValid = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInpitError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+
+// функция добавления обработчиков всем полям формы
+const setEventListeners = (formElement) => {
+  const formInputs = Array.from(formElement.querySelectorAll('.popup__input'));
+  const buttonElement = formElement.querySelector('.popup__save-button');
+
+
+  formInputs.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      isValid(formElement, inputElement)
+
+      toggleButtonState(formInputs, buttonElement);
+    });
+  });
+};
+
+// применение функции setEventListeners ко всем формам
+const enableValidation = () => {
+  const popupForms = Array.from(document.querySelectorAll('.popup__form'));
+
+  popupForms.forEach((formElement) => {
+    setEventListeners(formElement);
+  });
+};
+
+// вызов функции enableValidation
+enableValidation();
+
+// функция проверки на валидность инпутов
+const hasInvalidInput = (formInputs) => {
+  return formInputs.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
+
+const toggleButtonState = (formInputs, buttonElement) => {
+  if (hasInvalidInput(formInputs)) {
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.disabled = false;
+  }
+};
