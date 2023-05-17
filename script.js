@@ -1,11 +1,9 @@
 const page = document.querySelector('.page');
-const popups = Array.from(document.querySelectorAll('.popup'));
 const popupProfileEdit = document.querySelector('.popup_type_profile');
 const popupPlaceAdd = document.querySelector('.popup_type_place');
 const nameInput = document.querySelector('.profile__title');
 const jobInput = document.querySelector('.profile__subtitle');
 const buttonEdit = document.querySelector('.profile__edit-button');
-const buttonsClose = Array.from(document.querySelectorAll('.popup__button-close'));
 const buttonAdd = document.querySelector('.profile__add-button');
 const popupImage = document.querySelector('.popup_type_image');
 const popupImagePicture = popupImage.querySelector('.popup__image');
@@ -68,13 +66,20 @@ buttonAdd.addEventListener('click', () => {
 
 // закрытие попапов (Ecs, overlay)
 const setListenerCloseByClick = () => {
+  const popups = Array.from(document.querySelectorAll('.popup'));
   popups.forEach(item => {
     item.addEventListener('click', evt => {
       if (evt.target.classList.contains('popup__button-close')) {
         closePopup(item);
+        if (item !== popupImage) {
+          item.querySelector('.popup__form').reset();
+        }
       }
       if (evt.target.classList.contains('popup__overlay')) {
         closePopup(item);
+        if (item !== popupImage) {
+          item.querySelector('.popup__form').reset();
+        }
       }
     })
   });
@@ -83,43 +88,17 @@ const setListenerCloseByClick = () => {
 // вызов функции закрытия по клику
 setListenerCloseByClick();
 
-/* // функция фокусировки на попапе
-const focusOnForm = (form) => {
-  const firstElement = form.querySelector('.popup__input');
-  const lastElement = form.querySelector('.popup__save-button');
-
-  lastElement.addEventListener('focus', () => {
-    firstElement.focus();
-  })
-};
-
-const enableFocus = () => {
-  const forms = Array.from(document.querySelectorAll('.popup__form'));
-  forms.forEach((form) => {
-    focusOnForm(form);
-  })
-}
-
-enableFocus(); */
-
 // изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
 const submitFormHandler = (evt) => {
   evt.preventDefault();
 
-  if(popupName.value === '' && popupJob.value === '') {
-    closePopup(popupProfileEdit);
-  }
-  else {
-    const jobValue = popupJob.value;
-    const nameValue = popupName.value;
-    
-    nameInput.textContent = nameValue;
-    jobInput.textContent = jobValue;
+  const jobValue = popupJob.value;
+  const nameValue = popupName.value;
+  
+  nameInput.textContent = nameValue;
+  jobInput.textContent = jobValue;
 
-    closePopup(popupProfileEdit);
-
-    evt.target.reset()
-  }
+  closePopup(popupProfileEdit);
 };
 
 // кнопка "сохранить". сохранение изменений и закрытие попапа
@@ -186,17 +165,12 @@ cardsContainer.addEventListener('click', (evt) => {
 const submitCardFormHandler = (evt) => {
   evt.preventDefault();
 
-  if (popupPlace.value === '' && popupImageInput.value === '') {
-    closePopup(popupPlaceAdd)
-  }
-  else {
-    const card = createCard(popupPlace.value, popupImageInput.value);
-    cardsContainer.prepend(card);
+  const card = createCard(popupPlace.value, popupImageInput.value);
+  cardsContainer.prepend(card);
     
-    closePopup(popupPlaceAdd);
+  closePopup(popupPlaceAdd);
     
-    evt.target.reset()
-  }
+  evt.target.reset();
 };
 
 // кнопка "создать". сохранение изменений и закрытие попапа
@@ -219,8 +193,29 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.textContent = '';
 };
 
+// функция проверки на валидность инпутов
+const hasInvalidInput = (formInputs) => {
+  return formInputs.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
+
+const toggleButtonState = (formInputs, buttonElement) => {
+  if (hasInvalidInput(formInputs)) {
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.disabled = false;
+  }
+};
+
 // функция проверки на валидность и последующее выведение ошибки
 const isValid = (formElement, inputElement) => {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    inputElement.setCustomValidity("");
+  }
+
   if (!inputElement.validity.valid) {
     showInpitError(formElement, inputElement, inputElement.validationMessage);
   } else {
@@ -233,6 +228,7 @@ const setEventListeners = (formElement) => {
   const formInputs = Array.from(formElement.querySelectorAll('.popup__input'));
   const buttonElement = formElement.querySelector('.popup__save-button');
 
+  toggleButtonState(formInputs, buttonElement);
 
   formInputs.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
@@ -252,20 +248,4 @@ const enableValidation = () => {
   });
 };
 
-// вызов функции enableValidation
 enableValidation();
-
-// функция проверки на валидность инпутов
-const hasInvalidInput = (formInputs) => {
-  return formInputs.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-};
-
-const toggleButtonState = (formInputs, buttonElement) => {
-  if (hasInvalidInput(formInputs)) {
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.disabled = false;
-  }
-};
