@@ -1,3 +1,5 @@
+import './pages/index.css';
+
 import { enableValidation } from "./components/validate.js";
 import { submitFormHandler, closePopupBtn, closePopupOverlay } from "./components/modal.js";
 import { addCardsFromArr, listenerCards, submitCardFormHandler } from "./components/card.js"
