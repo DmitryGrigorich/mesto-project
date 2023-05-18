@@ -1,4 +1,4 @@
-import { openedPopup, openPopup, closePopup } from "../components/utils.js";
+import { openedPopup, closePopup } from "../components/utils.js";
 
 
 const popupProfileEdit = document.querySelector('.popup_type_profile');

@@ -30,19 +30,12 @@ module.exports = {
         type: 'asset/resource'
       },
       {
-
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, {
-          loader: 'css-loader'
-        }]
-      },
-      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, {
           loader: 'css-loader',
           options: { importLoaders: 1 }
         },
-          'postcss-loader'
+        'postcss-loader'
         ]
       },
     ]
