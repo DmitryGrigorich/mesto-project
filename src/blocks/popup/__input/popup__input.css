@@ -8,8 +8,8 @@
   width: 358px;
 }
 
-.popup__input:nth-child(3) {
-  margin-top: 30px;
+.popup__input:last-of-type {
+  padding-top: 30px;
 }
 
 .popup__input::-webkit-input-placeholder {
@@ -46,9 +46,5 @@
 @media screen and (max-width: 767px){
   .popup__input {
     width: 238px;
-  }
-
-  .popup__input:first-child {
-    margin-bottom: 30px;
   }
 }
