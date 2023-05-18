@@ -66,4 +66,4 @@ const submitCardFormHandler = (evt) => {
   evt.target.reset();
 };
 
-export { popupPlaceAdd, addCardsFromArr, listenerCards, submitCardFormHandler };
+export { addCardsFromArr, listenerCards, submitCardFormHandler };

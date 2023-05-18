@@ -1,18 +1,12 @@
 import { openedPopup, openPopup, closePopup } from "../components/utils.js";
 
-const buttonEdit = document.querySelector('.profile__edit-button');
-const buttonAdd = document.querySelector('.profile__add-button');
+
 const popupProfileEdit = document.querySelector('.popup_type_profile');
-const popupPlaceAdd = document.querySelector('.popup_type_place');
 const nameInput = document.querySelector('.profile__title');
 const jobInput = document.querySelector('.profile__subtitle');
-
-
 // инпуты попапов
 const popupName = document.forms.profileForm.nameInput;
 const popupJob = document.forms.profileForm.jobInput;
-
-
 
 // закрытие попапа кликом на кнопку закрытия
 const closePopupBtn = () => {
@@ -36,20 +30,17 @@ const closePopupOverlay = () => {
   });
 };
 
-// открытие попапа редактирования профиля
-const openProfilePopup = () => {
-  buttonEdit.addEventListener('click', () => {
-    openPopup(popupProfileEdit);
-    popupJob.value = jobInput.textContent;
-    popupName.value = nameInput.textContent;
-  });
+// изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
+const submitFormHandler = (evt) => {
+  evt.preventDefault();
+
+  const jobValue = popupJob.value;
+  const nameValue = popupName.value;
+  
+  nameInput.textContent = nameValue;
+  jobInput.textContent = jobValue;
+
+  closePopup(popupProfileEdit);
 };
 
-// открытие попапа добавления карточки
-const openCardPopup = () => {
-  buttonAdd.addEventListener('click', () => {
-    openPopup(popupPlaceAdd);
-  });
-};
-
-export { closePopupBtn, closePopupOverlay, openProfilePopup, openCardPopup }
+export { submitFormHandler, closePopupBtn, closePopupOverlay }
