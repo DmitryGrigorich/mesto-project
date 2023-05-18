@@ -8,7 +8,7 @@
   width: 358px;
 }
 
-.popup__input:nth-child(3) {
+.popup__input:last-of-type {
   margin-top: 30px;
 }
 
@@ -46,9 +46,5 @@
 @media screen and (max-width: 767px){
   .popup__input {
     width: 238px;
-  }
-
-  .popup__input:first-child {
-    margin-bottom: 30px;
   }
 }

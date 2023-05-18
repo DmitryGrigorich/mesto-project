@@ -1,9 +1,25 @@
 .popup__input-error {
+  position: absolute;
+  left: 0;
+  top: 32px;
   display: none;
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
   color: rgb(255, 0, 0);
-  padding-top: 5px;
   max-width: 358px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
+
+.popup__input-error:last-of-type {
+  top: 89px;
+}
+
+@media screen and (max-width: 767px) {
+  .popup__input-error {
+    max-width: 238px;
+  }
+}
+  

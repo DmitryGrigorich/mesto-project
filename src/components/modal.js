@@ -1,12 +1,31 @@
-import { openedPopup, closePopup } from "../components/utils.js";
+import { closeOnEsc } from "../components/utils.js";
+import { enableValidation } from "../components/validate.js";
 
+const buttonAdd = document.querySelector('.profile__add-button');
+const popupPlaceAdd = document.querySelector('.popup_type_place');
+const page = document.querySelector('.page');
 
-const popupProfileEdit = document.querySelector('.popup_type_profile');
-const nameInput = document.querySelector('.profile__title');
-const jobInput = document.querySelector('.profile__subtitle');
-// инпуты попапов
-const popupName = document.forms.profileForm.nameInput;
-const popupJob = document.forms.profileForm.jobInput;
+// функция открытия попапа
+const openPopup = (popup) =>  {
+  enableValidation({
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active',
+    inputSelector: '.popup__input',
+    saveButtonSelector: '.popup__save-button',
+    formSelector: '.popup__form'
+  });
+  page.classList.add('page_inactive');
+  popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeOnEsc)
+};
+
+// функция закрытия попапа
+const closePopup = () => {
+  const openedPopup = document.querySelector('.popup_opened');
+  page.classList.remove('page_inactive');
+  openedPopup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeOnEsc);
+};
 
 // закрытие попапа кликом на кнопку закрытия
 const closePopupBtn = () => {
@@ -14,7 +33,7 @@ const closePopupBtn = () => {
 
   btns.forEach((elem) => {
     elem.addEventListener('click', () => {
-      closePopup(openedPopup);
+      closePopup();
     });
   });
 };
@@ -25,22 +44,16 @@ const closePopupOverlay = () => {
 
   overlays.forEach((elem) => {
     elem.addEventListener('click', () => {
-      closePopup(openedPopup);
+      closePopup();
     });
   });
 };
 
-// изменение Имени и Профессии, плейсхолдер соответствует значениям на странице
-const submitFormHandler = (evt) => {
-  evt.preventDefault();
-
-  const jobValue = popupJob.value;
-  const nameValue = popupName.value;
-  
-  nameInput.textContent = nameValue;
-  jobInput.textContent = jobValue;
-
-  closePopup(popupProfileEdit);
+// открытие попапа добавления карточки
+const openCardPopup = () => {
+  buttonAdd.addEventListener('click', () => {
+    openPopup(popupPlaceAdd);
+  });
 };
 
-export { submitFormHandler, closePopupBtn, closePopupOverlay }
+export { closePopupBtn, closePopupOverlay, openCardPopup, openPopup, closePopup };
