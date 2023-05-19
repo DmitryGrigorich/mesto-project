@@ -10,29 +10,35 @@ const imageCaption = popupImage.querySelector('.popup__caption');
 // функция создания карточки
 const createCard = (place, link) => {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
+  const deleteButtons = Array.from(document.querySelectorAll('.card__delete'));
+  const likeButtons = Array.from(document.querySelectorAll('.card__like'));
+  const cardImages = Array.from(document.querySelectorAll('.card__image'));
+
   card.querySelector('.card__image').src = link;
   card.querySelector('.card__image').alt = place;
   card.querySelector('.card__title').textContent = place;
-  card.addEventListener('click', (evt) => {
-    const evtTarget = evt.target;
-    const evtCurrentTarget = evt.currentTarget;
-    // кнопка лайка
-    if (evtTarget.classList.contains('card__like')) {
-      evtTarget.classList.toggle('card__like_active');
-    }
-    // кнопка удаления
-    if (evtTarget.classList.contains('card__delete')) {
-      evtTarget.closest('.card').remove();
-    }
-    // открытие попапа с картинкой при нажатии на картинку
-    if (evtTarget.classList.contains('card__image')) {
-      const itemText = evtCurrentTarget.querySelector('.card__title').textContent;
-      
-      popupImagePicture.src = evtTarget.src;
+
+  deleteButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.closest('.card').remove();
+    });
+  });
+
+  likeButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('card__like_active');
+    });
+  });
+  
+  cardImages.forEach((img) => {
+    img.addEventListener('click', () => {
+      const itemText = img.closest('.card').querySelector('.card__title').textContent;
+
+      popupImagePicture.src = img.src;
       popupImagePicture.alt = itemText;
       imageCaption.textContent = itemText;
       openPopup(popupImage);
-    }
+    });
   });
 
   return card;
@@ -46,12 +52,4 @@ const addCardsFromArr = () => {
   })
 }
 
-
-// обработчик действий в карточке
-const listenerCards = () => {
-}
-
-
-
-
-export { createCard, addCardsFromArr, listenerCards };
+export { createCard, addCardsFromArr };

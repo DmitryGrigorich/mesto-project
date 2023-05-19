@@ -1,8 +1,8 @@
 import './pages/index.css';
 
 import { enableValidation } from "./components/validate.js";
-import { openCardPopup, closePopupBtn, closePopupOverlay, openPopup, closePopup } from "./components/modal.js";
-import { createCard, addCardsFromArr, listenerCards } from "./components/card.js"
+import { closePopupBtn, closePopupOverlay, openPopup, closePopup } from "./components/modal.js";
+import { createCard, addCardsFromArr } from "./components/card.js"
 
 const popupProfileEdit = document.querySelector('.popup_type_profile');
 const popupPlaceAdd = document.querySelector('.popup_type_place');
@@ -14,6 +14,7 @@ const popupJob = document.forms.profileForm.jobInput;
 const popupPlace = document.forms.placeForm.placeInput;
 const popupImageInput = document.forms.placeForm.imageInput;
 const cardsContainer = document.querySelector('.cards');
+const buttonAdd = document.querySelector('.profile__add-button');
 
 // открытие попапа редактирования профиля
 const openProfilePopup = () => {
@@ -31,7 +32,7 @@ const submitCardFormHandler = (evt) => {
   const card = createCard(popupPlace.value, popupImageInput.value);
   cardsContainer.prepend(card);
     
-  closePopup();
+  closePopup(popupPlaceAdd);
     
   evt.target.reset();
 };
@@ -46,8 +47,18 @@ const submitFormHandler = (evt) => {
   nameInput.textContent = nameValue;
   jobInput.textContent = jobValue;
 
-  closePopup();
+  closePopup(popupProfileEdit);
+
+  
 };
+
+// открытие попапа добавления карточки
+const openCardPopup = () => {
+  buttonAdd.addEventListener('click', () => {
+    openPopup(popupPlaceAdd);
+  });
+};
+
 
 popupProfileEdit.addEventListener('submit', submitFormHandler);
 
@@ -56,7 +67,6 @@ popupPlaceAdd.addEventListener('submit', submitCardFormHandler);
 openProfilePopup();
 addCardsFromArr();
 openCardPopup();
-listenerCards();
 closePopupBtn();
 closePopupOverlay();
 

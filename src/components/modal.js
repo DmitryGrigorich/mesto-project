@@ -1,29 +1,19 @@
-import { closeOnEsc } from "../components/utils.js";
-import { enableValidation } from "../components/validate.js";
-
-const buttonAdd = document.querySelector('.profile__add-button');
-const popupPlaceAdd = document.querySelector('.popup_type_place');
 const page = document.querySelector('.page');
 
 // функция открытия попапа
 const openPopup = (popup) =>  {
-  enableValidation({
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputSelector: '.popup__input',
-    saveButtonSelector: '.popup__save-button',
-    formSelector: '.popup__form'
-  });
+  if (popup.querySelector('.popup__save-button')) {
+    popup.querySelector('.popup__save-button').disabled = true;
+  }
   page.classList.add('page_inactive');
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeOnEsc)
 };
 
 // функция закрытия попапа
-const closePopup = () => {
-  const openedPopup = document.querySelector('.popup_opened');
+const closePopup = (popup) => {
   page.classList.remove('page_inactive');
-  openedPopup.classList.remove('popup_opened');
+  popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeOnEsc);
 };
 
@@ -33,7 +23,8 @@ const closePopupBtn = () => {
 
   btns.forEach((elem) => {
     elem.addEventListener('click', () => {
-      closePopup();
+      const popup = elem.closest('.popup');
+      closePopup(popup);
     });
   });
 };
@@ -44,16 +35,18 @@ const closePopupOverlay = () => {
 
   overlays.forEach((elem) => {
     elem.addEventListener('click', () => {
-      closePopup();
+      const popup = elem.closest('.popup');
+      closePopup(popup);
     });
   });
 };
 
-// открытие попапа добавления карточки
-const openCardPopup = () => {
-  buttonAdd.addEventListener('click', () => {
-    openPopup(popupPlaceAdd);
-  });
+const closeOnEsc = (evt) => {
+  const openedPopup = document.querySelector('.popup_opened');
+  
+  if (evt.key === 'Escape') {
+    closePopup(openedPopup);
+  }
 };
 
-export { closePopupBtn, closePopupOverlay, openCardPopup, openPopup, closePopup };
+export { closePopupBtn, closePopupOverlay, openPopup, closePopup };
