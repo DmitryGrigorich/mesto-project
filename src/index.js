@@ -67,6 +67,7 @@ popupPlaceAdd.addEventListener('submit', submitCardFormHandler);
 openProfilePopup();
 addCardsFromArr();
 openCardPopup();
+listenerCards();
 closePopupBtn();
 closePopupOverlay();
 
