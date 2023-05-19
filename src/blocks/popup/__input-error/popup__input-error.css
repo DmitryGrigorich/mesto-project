@@ -8,9 +8,6 @@
   line-height: 15px;
   color: rgb(255, 0, 0);
   max-width: 358px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .popup__input-error:last-of-type {
