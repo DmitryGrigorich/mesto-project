@@ -2,9 +2,6 @@ const page = document.querySelector('.page');
 
 // функция открытия попапа
 const openPopup = (popup) =>  {
-  if (popup.querySelector('.popup__save-button')) {
-    popup.querySelector('.popup__save-button').disabled = true;
-  }
   page.classList.add('page_inactive');
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeOnEsc)
@@ -22,8 +19,8 @@ const closePopupBtn = () => {
   const btns = Array.from(document.querySelectorAll('.popup__button-close'));
 
   btns.forEach((elem) => {
+    const popup = elem.closest('.popup');
     elem.addEventListener('click', () => {
-      const popup = elem.closest('.popup');
       closePopup(popup);
     });
   });
@@ -41,10 +38,10 @@ const closePopupOverlay = () => {
   });
 };
 
-const closeOnEsc = (evt) => {
-  const openedPopup = document.querySelector('.popup_opened');
-  
+const closeOnEsc = (evt) => {  
   if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    
     closePopup(openedPopup);
   }
 };

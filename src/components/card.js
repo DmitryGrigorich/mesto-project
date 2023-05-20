@@ -10,35 +10,26 @@ const imageCaption = popupImage.querySelector('.popup__caption');
 // функция создания карточки
 const createCard = (place, link) => {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const deleteButtons = Array.from(document.querySelectorAll('.card__delete'));
-  const likeButtons = Array.from(document.querySelectorAll('.card__like'));
-  const cardImages = Array.from(document.querySelectorAll('.card__image'));
 
   card.querySelector('.card__image').src = link;
   card.querySelector('.card__image').alt = place;
   card.querySelector('.card__title').textContent = place;
 
-  deleteButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.closest('.card').remove();
-    });
-  });
+  const deleteButtons = card.querySelector('.card__delete');
+  const likeButtons = card.querySelector('.card__like');
+  const cardImages = card.querySelector('.card__image');
 
-  likeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('card__like_active');
-    });
-  });
+  deleteButtons.addEventListener('click', () => deleteButtons.closest('.card').remove());
+
+  likeButtons.addEventListener('click', () => likeButtons.classList.toggle('card__like_active'));
   
-  cardImages.forEach((img) => {
-    img.addEventListener('click', () => {
-      const itemText = img.closest('.card').querySelector('.card__title').textContent;
+  cardImages.addEventListener('click', () => {
+    const itemText = cardImages.closest('.card').querySelector('.card__title').textContent;
 
-      popupImagePicture.src = img.src;
-      popupImagePicture.alt = itemText;
-      imageCaption.textContent = itemText;
-      openPopup(popupImage);
-    });
+    popupImagePicture.src = link;
+    popupImagePicture.alt = place;
+    imageCaption.textContent = place;
+    openPopup(popupImage);
   });
 
   return card;

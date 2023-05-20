@@ -19,6 +19,7 @@ const buttonAdd = document.querySelector('.profile__add-button');
 // открытие попапа редактирования профиля
 const openProfilePopup = () => {
   buttonEdit.addEventListener('click', () => {
+    popupProfileEdit.querySelector('.popup__save-button').disabled = true;
     openPopup(popupProfileEdit);
     popupJob.value = jobInput.textContent;
     popupName.value = nameInput.textContent;
@@ -55,6 +56,7 @@ const submitFormHandler = (evt) => {
 // открытие попапа добавления карточки
 const openCardPopup = () => {
   buttonAdd.addEventListener('click', () => {
+    popupPlaceAdd.querySelector('.popup__save-button').disabled = true;
     openPopup(popupPlaceAdd);
   });
 };
