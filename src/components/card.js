@@ -1,55 +1,62 @@
-import initialCards from "./constants.js";
 import { openPopup } from "./modal.js";
-
-const popupImage = document.querySelector('.popup_type_image');
-const popupImagePicture = popupImage.querySelector('.popup__image');
-const cardTemplate = document.querySelector('#template_card').content;
-const cardsContainer = document.querySelector('.cards');
-const imageCaption = popupImage.querySelector('.popup__caption');
+import {
+  popupImage,
+  popupImagePicture,
+  cardTemplate,
+  imageCaption,
+  myId
+} from "./constants";
+import {
+  deleteCard
+} from "./api.js";
 
 // функция создания карточки
-const createCard = (place, link) => {
+const createCard = (place, link, cardId, likes, ownerId) => {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const deleteButtons = Array.from(document.querySelectorAll('.card__delete'));
-  const likeButtons = Array.from(document.querySelectorAll('.card__like'));
-  const cardImages = Array.from(document.querySelectorAll('.card__image'));
+  const deleteButton = card.querySelector('.card__delete');
+  const likeButton = card.querySelector('.card__like');
+  const cardImage = card.querySelector('.card__image');
 
+  card.setAttribute('data-id', `${cardId}`);
   card.querySelector('.card__image').src = link;
   card.querySelector('.card__image').alt = place;
   card.querySelector('.card__title').textContent = place;
+  if(ownerId !== myId) {
+    deleteButton.remove()
+  };
+  if(checkLikesData(likes)) toggleLikeStatus(likeButton);
 
-  deleteButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.closest('.card').remove();
-    });
-  });
+  likesCounter(card, likes);
 
-  likeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('card__like_active');
-    });
-  });
+  deleteButton.addEventListener('click', () => {
+    deleteCard(cardId);
+    deleteButton.closest('.card').remove();
+  })
   
-  cardImages.forEach((img) => {
-    img.addEventListener('click', () => {
-      const itemText = img.closest('.card').querySelector('.card__title').textContent;
+  cardImage.addEventListener('click', () => {
+    const itemText = cardImage.closest('.card').querySelector('.card__title').textContent;
 
-      popupImagePicture.src = img.src;
-      popupImagePicture.alt = itemText;
-      imageCaption.textContent = itemText;
-      openPopup(popupImage);
-    });
+    popupImagePicture.src = link;
+    popupImagePicture.alt = place;
+    imageCaption.textContent = place;
+    openPopup(popupImage);
   });
 
   return card;
 }
-
-// добавление карточек с данными из массива
-const addCardsFromArr = () => {
-  initialCards.forEach((item) => {
-    const card = createCard(item.name, item.link);
-    cardsContainer.append(card);
-  })
+const checkLikesData = (likes) => {
+  return likes.some((like) => {
+    return like._id === myId;
+  });
 }
 
-export { createCard, addCardsFromArr };
+const toggleLikeStatus = (buttonElement) => {
+  buttonElement.classList.toggle('card__like_active');
+}
+
+const likesCounter = (cardElement, likes) => {
+  cardElement.querySelector('.card__like-counter').textContent = likes.length;
+}
+
+
+export { createCard, likesCounter };
