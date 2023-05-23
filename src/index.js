@@ -88,6 +88,7 @@ const openCardPopup = () => {
 // открытие попапа редактирования аватара
 const openAvatarPopup = () => {
   avatarEdit.addEventListener('click', () => {
+    popupAvatarEdit.querySelector('.popup__save-button').disabled = true;
     openPopup(popupAvatarEdit);
   })
 };
@@ -105,7 +106,8 @@ const profileAvatarEdit = (evt) => {
     .catch(err => console.error(`Ошибка: ${err}`))
     .finally(() => {
       formAvatar.querySelector('.popup__save-button').textContent = submitBtnStatus.save;
-    })
+    });
+    evt.target.reset(); 
 };
 
 popupAvatarEdit.addEventListener('submit', profileAvatarEdit);
@@ -113,6 +115,7 @@ popupAvatarEdit.addEventListener('submit', profileAvatarEdit);
 // добавление карточек через форму
 const submitCardFormHandler = (evt) => {
   evt.preventDefault();
+
   formPlace.querySelector('.popup__save-button').textContent = submitBtnStatus.saving;
   postCard(popupPlace.value, popupImageInput.value)
     .then((cardData) => {
@@ -122,7 +125,8 @@ const submitCardFormHandler = (evt) => {
     .catch(err => console.error(`Ошибка: ${err}`))
     .finally(() => {
       formPlace.querySelector('.popup__save-button').textContent = submitBtnStatus.create;
-    })
+    });
+  evt.target.reset();  
 };
 
 popupPlaceAdd.addEventListener('submit', submitCardFormHandler);

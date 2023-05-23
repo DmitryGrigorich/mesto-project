@@ -27,7 +27,6 @@ export const submitBtnStatus = {
   create: 'Создать',
   saving: 'Сохранение...'
 }
-console.log(formAvatar.querySelector('.popup__save-button'))
 export const myId = '7425b8cd3ddcfc3541a0d6b3';
 export const config = {
   mainLink: "https://nomoreparties.co/v1/plus-cohort-24",
