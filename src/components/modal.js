@@ -1,4 +1,4 @@
-const page = document.querySelector('.page');
+import { page } from "./constants";
 
 // функция открытия попапа
 const openPopup = (popup) =>  {
