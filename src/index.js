@@ -55,14 +55,6 @@ const addCard = (card) => {
   cardsContainer.prepend(card)
 }
 
-const myId = () => {
-  return getInfoUser()
-    .then(res => {
-      const myId = res._id;
-      return myId;
-    });
-}
-
 // получение данных с сервера
 Promise.all([getCards(), getInfoUser()])
   .then(([cardsData, userData]) => {
@@ -152,7 +144,7 @@ const submitFormHandler = (evt) => {
     })
     .catch(err => console.error(`Ошибка: ${err}`))
     .finally(() => {
-      formProfile.querySelector('.popup__save-button').textContent = submitBtnStatus.saving;
+      formProfile.querySelector('.popup__save-button').textContent = submitBtnStatus.save;
     })
 };
 
