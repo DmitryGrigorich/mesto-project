@@ -55,13 +55,21 @@ const addCard = (card) => {
   cardsContainer.prepend(card)
 }
 
+const myId = () => {
+  return getInfoUser()
+    .then(res => {
+      const myId = res._id;
+      return myId;
+    });
+}
+
 // получение данных с сервера
 Promise.all([getCards(), getInfoUser()])
   .then(([cardsData, userData]) => {
     renderProfile(userData.name, userData.about)
     renderAvatar(userData.avatar)
     cardsData.forEach(cardData => {
-      const card = createCard(cardData.name, cardData.link, cardData._id, cardData.likes, cardData.owner._id)
+      const card = createCard(cardData.name, cardData.link, cardData._id, cardData.likes, cardData.owner._id, userData._id)
       card.querySelector('img').onload = cardsContainer.append(card);
     })
   })
@@ -117,9 +125,9 @@ const submitCardFormHandler = (evt) => {
   evt.preventDefault();
 
   formPlace.querySelector('.popup__save-button').textContent = submitBtnStatus.saving;
-  postCard(popupPlace.value, popupImageInput.value)
-    .then((cardData) => {
-      addCard(createCard(cardData.name, cardData.link, cardData._id, cardData.likes, cardData.owner._id))
+  Promise.all([postCard(popupPlace.value, popupImageInput.value), getInfoUser()])
+    .then(([cardData, userData]) => {
+      addCard(createCard(cardData.name, cardData.link, cardData._id, cardData.likes, cardData.owner._id, userData._id))
       closePopup(popupPlaceAdd)
     })
     .catch(err => console.error(`Ошибка: ${err}`))
@@ -128,6 +136,8 @@ const submitCardFormHandler = (evt) => {
     });
   evt.target.reset();  
 };
+
+
 
 popupPlaceAdd.addEventListener('submit', submitCardFormHandler);
 
