@@ -24,7 +24,7 @@ const createCard = (place, link, cardId, likes, ownerId, myId) => {
     deleteButton.remove()
   };
 
-  if(checkLikesData(likes)) toggleLikeStatus(likeButton);
+  if(checkLikesData(likes, myId)) toggleLikeStatus(likeButton);
 
   likesCounter(card, likes);
 
